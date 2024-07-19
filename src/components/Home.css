@@ -1,0 +1,9 @@
+.calc-content {
+    width: 37rem;
+    padding-left: 15rem;
+
+}
+.calc-card {
+    display: flex;
+    justify-content: center;
+}
