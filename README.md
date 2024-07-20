@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# To run the Arithmetic-Calculator-App
 
 
 1. Clone the project from
