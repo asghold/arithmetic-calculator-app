@@ -21,7 +21,7 @@ const Login = ()=>{
                 request("GET","/api/calculator/balance",{})
                 .then((resp) => {
 
-                    setBalance(resp.data.userBalance!==undefined);
+                    setBalance(resp.data.userBalance!==undefined ? resp.data.userBalance : 100);
                     navigate('/home');
                 }
                 )
