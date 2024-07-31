@@ -11,9 +11,12 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
     const [values, setValues] = useState([]);
     const [operator, setOperator] = useState(0);
     const [error, setError] = useState('');
+    const [disable, setDisable] = useState(false);
     
     
     const handleOperation=(({type})=> {
+
+        setDisable(true);
             
         switch(type){
             case 'clear':
@@ -74,18 +77,18 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                     dispatch({type:"handleClear"});  
                     dispatch({ type: "addtoInputNum", param: response.data.operationResponse});
                     setBalance(response.data.userBalance);
-                    chargeBalance(response.data.balance);
+                    chargeBalance(response.data.userBalance);
                     
                     setValues([]);
-                    setOperator(0);                
+                    setOperator(0);
+                    setDisable(false);                
                     }
                 ).catch((error)=> {
                     console.log(error);
+                    setDisable(false);
                 });
                 break;
-        }
-
-        
+        }       
         
     });
 
@@ -100,17 +103,20 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                 chargeBalance(response.data.userBalance);
                 setValues([]);
                 setOperator(0);
-                setError('');                
+                setError(''); 
+                setDisable(false);               
             }
             ).catch((error)=> {
                 if(operator===4 && value==='0'){
                     dispatch({type:"handleClear"});  
                     dispatch({ type: "addtoInputNum", param: 'Infinity'});
                     setValues([]);
-                    setOperator(0);                
+                    setOperator(0);  
+                    setDisable(false);              
                         
                 } else {
                     setError("Insufficient balance");
+                    setDisable(false);
                 }
                 
             })
@@ -127,7 +133,9 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "7" })}>7</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "8" })}>8</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "9" })}>9</Button>
-                    <Button onClick={() => handleOperation({ type: "root" })}>√</Button> 
+                    <Button 
+                        disabled={disable} 
+                        onClick={() => handleOperation({ type: "root" })}>√</Button> 
                     <Button onClick={() => handleOperation({ type: "clear" })}>C</Button>
                     
                 </div>
@@ -135,15 +143,23 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "4" })}>4</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "5" })}>5</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "6" })}>6</Button>
-                    <Button onClick={() => handleOperation({ type: "sum"})}>+</Button>
-                    <Button onClick={() => handleOperation({ type: "subs"})}>-</Button>                      
+                    <Button 
+                        disabled={disable} 
+                        onClick={() => handleOperation({ type: "sum"})}>+</Button>
+                    <Button 
+                        disabled={disable} 
+                        onClick={() => handleOperation({ type: "subs"})}>-</Button>                      
                 </div>
                 <div className="row">
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "1" })}>1</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "2" })}>2</Button>
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "3" })}>3</Button>
-                    <Button onClick={() => handleOperation({ type: "mult", param: "*" })}>*</Button>
-                    <Button onClick={() => handleOperation({ type: "div", param: "/" })}>/</Button>
+                    <Button
+                        disabled={disable} 
+                        onClick={() => handleOperation({ type: "mult", param: "*" })}>*</Button>
+                    <Button 
+                        disabled={disable} 
+                        onClick={() => handleOperation({ type: "div", param: "/" })}>/</Button>
                 </div>
                 <div className="row">
                     <Button onClick={() => dispatch({ type: "addtoInputNum", param: "0" })}>0</Button>

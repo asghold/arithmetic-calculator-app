@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { request } from "../../services/axios_helper";
+import { request, setBalance } from "../../services/axios_helper";
 
 const StringGenerator = ({chargeBalance}) => {
 
@@ -29,6 +29,7 @@ const StringGenerator = ({chargeBalance}) => {
             }
         ).then((response) => {
             setResult(()=> {return response.data.operationResponse});
+            setBalance(response.data.userBalance);
             chargeBalance(response.data.userBalance);
             setError('');
             setErrorNumber('');
