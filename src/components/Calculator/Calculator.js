@@ -26,7 +26,11 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                 break;
             case 'sum':
                 if(values.length!==0){
+                    if(value!==''){
                         handleEquals();
+                    }else {
+                        break;
+                    }
                 }
                 setValues((values)=>{
                     return values.concat(value)});
@@ -35,7 +39,11 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                 break;
             case 'subs':
                 if(values.length!==0){
-                    handleEquals();
+                    if(value!==''){
+                        handleEquals();
+                    }else {
+                        break;
+                    }
                 }
                 setValues((values)=>{
                     return values.concat(value)});
@@ -44,7 +52,11 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                 break;
             case 'mult':
                 if(values.length!==0){
-                    handleEquals();
+                    if(value!==''){
+                        handleEquals();
+                    }else {
+                        break;
+                    }
                 }
                 setValues((values)=>{
                     return values.concat(value)});
@@ -53,7 +65,7 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
                 break;
             case 'div':
                 if(values.length!==0){
-                    if(value!== 0){
+                    if(value!== 0 && value!==''){
                         handleEquals();
                     } else {
                         dispatch({type:"handleClear"});  
@@ -94,16 +106,16 @@ const Calculator = ({value, dispatch, chargeBalance}) => {
 
     const handleEquals = ()=>{
         if(values.length!==0 && operator!==0){
-            
             request("POST","/api/calculator/"+operator,
                 {numbers: [values[0],value]}
             ).then((response) => {
                 dispatch({type:"handleClear"});  
                 dispatch({ type: "addtoInputNum", param: response.data.operationResponse});
+                setBalance(response.data.userBalance);
                 chargeBalance(response.data.userBalance);
                 setValues([]);
                 setOperator(0);
-                setError(''); 
+                setError('');                 
                 setDisable(false);               
             }
             ).catch((error)=> {

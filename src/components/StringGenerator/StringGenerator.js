@@ -15,10 +15,14 @@ const StringGenerator = ({chargeBalance}) => {
         //    return;
         //} 
         if(!number){
-            setErrorNumber('Enter the number of characters  you want to generate')
+            setErrorNumber('Enter the number of characters  you want to generate');
             return;
         } else if(number>32){
-            setErrorNumber('Number characters must be less or equal to 32')
+            setErrorNumber('Number characters must be less or equal to 32');
+            return;
+        } else if(number < 1){
+            setErrorNumber('Number characters must be greater than 0');
+            return;
         }
 
         request("POST","/api/calculator/6",
@@ -34,7 +38,7 @@ const StringGenerator = ({chargeBalance}) => {
             setError('');
             setErrorNumber('');
             
-        }
+                    }
         ).catch((error)=> {
             setError("Insufficient balance");            
         })
